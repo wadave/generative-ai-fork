@@ -4,6 +4,10 @@ Main function to run FastAPI server.
 
 import json
 import logging
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
@@ -20,7 +24,7 @@ from starlette.websockets import WebSocketDisconnect
 load_dotenv()
 
 APP_NAME = "ADK MCP App"
-MODEL_ID = "gemini-2.0-flash"
+MODEL_ID = "gemini-2.5-flash"
 STATIC_DIR = "static"
 
 # Initialize services (globally or via dependency injection)
@@ -151,9 +155,12 @@ async def run_adk_agent_session(
     except WebSocketDisconnect:
         # This block executes when the client disconnects
         logging.info(f"Client {session_id} disconnected.")
+<<<<<<< HEAD
     except Exception as e:
         # Catch other potential errors in your agent logic
         logging.error(f"Error in agent session for {session_id}: {e}", exc_info=True)
+=======
+>>>>>>> main
     finally:
         logging.info(f"Closing runner for session {session_id}...")
         await runner.close()
@@ -190,6 +197,7 @@ async def websocket_endpoint(
         # This might be redundant if run_adk_agent_session handles it,
         # but good for logging the endpoint's perspective.
         logging.info(f"WebSocket endpoint for {session_id} detected disconnect.")
+<<<<<<< HEAD
     except Exception as e:
         # Catch any other unexpected error
         logging.error(
@@ -198,6 +206,8 @@ async def websocket_endpoint(
         )
         if not websocket.client_state == websocket.client_state.DISCONNECTED:
             await websocket.close(code=1011)  # Internal Error
+=======
+>>>>>>> main
     finally:
         logging.info(f"WebSocket endpoint for session {session_id} is concluding.")
 

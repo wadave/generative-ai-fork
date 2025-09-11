@@ -2,6 +2,13 @@ import json
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
+<<<<<<< HEAD
+=======
+from fastapi import FastAPI, WebSocket
+from fastapi.staticfiles import StaticFiles
+from google.adk.agents import LlmAgent
+from google.adk.artifacts.in_memory_artifact_service import InMemoryArtifactService
+>>>>>>> main
 from google.adk.runners import Runner
 from fastapi import FastAPI, WebSocket
 from starlette.websockets import WebSocketDisconnect
@@ -23,6 +30,7 @@ STATIC_DIR = Path("static")
 session_service = InMemorySessionService()
 artifacts_service = InMemoryArtifactService()
 
+<<<<<<< HEAD
 
 async def get_tools_async(server_params):
     """Gets tools from MCP Server."""
@@ -44,6 +52,8 @@ async def get_agent_async(server_params):
     return root_agent, exit_stack
 
 
+=======
+>>>>>>> main
 ct_server_params = StdioServerParameters(
     command="python",
     args=["./mcp_server/cocktail.py"],
@@ -59,7 +69,11 @@ def create_agent(server_params: StdioServerParameters):
      - Please format your response using Markdown to make it easy to read and understand.
     """
     root_agent = LlmAgent(
+<<<<<<< HEAD
         model="gemini-2.0-flash",  # "gemini-2.5-pro-preview-05-06"
+=======
+        model="gemini-2.5-flash",
+>>>>>>> main
         name="ai_assistant",
         instruction=agent_instruction,
         tools=[MCPToolset(connection_params=server_params)],
@@ -67,9 +81,13 @@ def create_agent(server_params: StdioServerParameters):
     return root_agent
 
 
+<<<<<<< HEAD
 async def process_message_with_runner(
     runner: Runner, session_id: str, question: str
 ):
+=======
+async def process_message_with_runner(runner: Runner, session_id: str, question: str):
+>>>>>>> main
     """Processes a single message using the provided runner."""
     content = types.Content(role="user", parts=[types.Part(text=question)])
     events_async = runner.run_async(
@@ -107,17 +125,26 @@ async def run_adk_agent_session(
                 continue
             # Send the text to the client
             ai_message = "\n".join(response_parts)
+<<<<<<< HEAD
             logging.info(f"Sending to {session_id}: {ai_message[:100]}...") # Log snippet
+=======
+            logging.info(
+                f"Sending to {session_id}: {ai_message[:100]}..."
+            )  # Log snippet
+>>>>>>> main
             await websocket.send_text(json.dumps({"message": ai_message}))
 
     except WebSocketDisconnect:
         # This block executes when the client disconnects
         logging.info(f"Client {session_id} disconnected.")
+<<<<<<< HEAD
     except Exception as e:
         # Catch other potential errors in your agent logic
         logging.error(
             f"Error in agent session for {session_id}: {e}", exc_info=True
         )
+=======
+>>>>>>> main
     finally:
         logging.info(f"Closing runner for session {session_id}...")
         await runner.close()
@@ -154,6 +181,7 @@ async def websocket_endpoint(
         # This might be redundant if run_adk_agent_session handles it,
         # but good for logging the endpoint's perspective.
         logging.info(f"WebSocket endpoint for {session_id} detected disconnect.")
+<<<<<<< HEAD
     except Exception as e:
         # Catch any other unexpected error
         logging.error(
@@ -164,4 +192,10 @@ async def websocket_endpoint(
             await websocket.close(code=1011) # Internal Error
     finally:
         logging.info(f"WebSocket endpoint for session {session_id} is concluding.")
+=======
+    finally:
+        logging.info(f"WebSocket endpoint for session {session_id} is concluding.")
+
+
+>>>>>>> main
 app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
